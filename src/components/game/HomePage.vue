@@ -39,8 +39,8 @@ const play = (choice) => {
 .home-page .choices img {
   cursor: pointer;
   padding: 20px;
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
 }
 
 .home-page .choices img:hover {
