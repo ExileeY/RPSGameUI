@@ -1,24 +1,20 @@
 # rps-game-ui
 
-## Project setup
+## How to use
+1. Clone repository
+```
+git clone git@github.com:ExileeY/RPSGameUI.git
+```
+2. Navigate to the cloned repository
+```
+cd RPSGameUI
+```
+3. Install dependencies
 ```
 yarn install
 ```
-
-### Compiles and hot-reloads for development
+4. Run application
 ```
 yarn serve
 ```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+5. Go to [link](http://localhost:8080/)
