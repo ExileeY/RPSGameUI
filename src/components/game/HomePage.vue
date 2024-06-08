@@ -5,24 +5,34 @@
     </div>
 
     <div class="choices flex-row gap-10">
-      <div @click="play('rock')">
-        1
-      </div>
+      <img src="@/assets/rock.svg" @click="play('rock')"/>
+      <img src="@/assets/paper.svg" @click="play('paper')"/>
+      <img src="@/assets/scissors.svg" @click="play('scissors')"/>
+    </div>
 
-      <div @click="play('paper')">
-        2
-      </div>
-
-      <div @click="play('scissors')">
-        3
-      </div>
+    <div 
+      v-if="gameResultMessage"
+      class="result"
+    >
+      {{ gameResultMessage }}
     </div>
   </div>
 </template>
 
 <script setup>
-const play = (choice) => {
-  console.log('userChoise:', choice)
+import { ref } from 'vue'
+import axios from 'axios'
+
+const gameResultMessage = ref('')
+
+const play = async (choice) => {
+  const { status, data } = await axios.post('http://localhost:3000/games/create-or-show', { game: { user_choice: choice }})
+  
+  if (status === 200 || status === 201) {
+    gameResultMessage.value = data.result
+  } else {
+    gameResultMessage.value = 'Something went wrong'
+  }
 }
 </script>
 
@@ -42,5 +52,17 @@ const play = (choice) => {
   text-align: left;
   line-height: 60px;
   color: #36006C;
+}
+
+.home-page .choices img {
+  cursor: pointer;
+  padding: 20px;
+  width: 150px;
+  height: 150px;
+}
+
+.home-page .choices img:hover {
+  background: #F2F2F2;
+  border-radius: 5px;
 }
 </style>
