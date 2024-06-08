@@ -1,39 +1,58 @@
 <template>
   <div class="home-page flex-column flex-center">
-    <div class="title">
-      ROCK – PAPER – SCISSORS
+    <div v-if="sessionUUID">
+      <div>{{ gameResultMessage }}</div>
+      <button @click="resetGame">Play again</button>
     </div>
 
-    <div class="choices flex-row gap-10">
-      <img src="@/assets/rock.svg" @click="play('rock')"/>
-      <img src="@/assets/paper.svg" @click="play('paper')"/>
-      <img src="@/assets/scissors.svg" @click="play('scissors')"/>
-    </div>
+    <div v-else>
+      <div class="title">
+        ROCK – PAPER – SCISSORS
+      </div>
 
-    <div 
-      v-if="gameResultMessage"
-      class="result"
-    >
-      {{ gameResultMessage }}
+      <div class="choices flex-row gap-10">
+        <img src="@/assets/rock.svg" @click="play('rock')"/>
+        <img src="@/assets/paper.svg" @click="play('paper')"/>
+        <img src="@/assets/scissors.svg" @click="play('scissors')"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
+const sessionUUID = ref(localStorage.getItem('uuid'))
 const gameResultMessage = ref('')
 
 const play = async (choice) => {
-  const { status, data } = await axios.post('http://localhost:3000/games/create-or-show', { game: { user_choice: choice }})
+  sessionUUID.value = sessionUUID.value || crypto.randomUUID()
+  const parameters = {
+    uuid: sessionUUID.value,
+    game: { user_choice: choice }
+  }
+
+  const { status, data } = await axios.post('http://localhost:3000/games/create-or-show', parameters)
   
   if (status === 200 || status === 201) {
     gameResultMessage.value = data.result
+    localStorage.setItem('uuid', sessionUUID.value)
   } else {
     gameResultMessage.value = 'Something went wrong'
   }
 }
+
+const resetGame = () => {
+  localStorage.removeItem('uuid')
+
+  sessionUUID.value = null
+  gameResultMessage.value = ''
+}
+
+onMounted(() => {
+  if (sessionUUID.value) { play(null) }
+})
 </script>
 
 <style scoped>
