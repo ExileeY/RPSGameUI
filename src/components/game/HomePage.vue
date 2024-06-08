@@ -5,17 +5,9 @@
     </div>
 
     <div class="choices flex-row gap-10">
-      <div @click="play('rock')">
-        1
-      </div>
-
-      <div @click="play('paper')">
-        2
-      </div>
-
-      <div @click="play('scissors')">
-        3
-      </div>
+      <img src="@/assets/rock.svg" @click="play('rock')"/>
+      <img src="@/assets/paper.svg" @click="play('paper')"/>
+      <img src="@/assets/scissors.svg" @click="play('scissors')"/>
     </div>
   </div>
 </template>
@@ -42,5 +34,17 @@ const play = (choice) => {
   text-align: left;
   line-height: 60px;
   color: #36006C;
+}
+
+.home-page .choices img {
+  cursor: pointer;
+  padding: 20px;
+  width: 100px;
+  height: 100px;
+}
+
+.home-page .choices img:hover {
+  background: #F2F2F2;
+  border-radius: 5px;
 }
 </style>
