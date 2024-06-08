@@ -9,12 +9,30 @@
       <img src="@/assets/paper.svg" @click="play('paper')"/>
       <img src="@/assets/scissors.svg" @click="play('scissors')"/>
     </div>
+
+    <div 
+      v-if="gameResultMessage"
+      class="result"
+    >
+      {{ gameResultMessage }}
+    </div>
   </div>
 </template>
 
 <script setup>
-const play = (choice) => {
-  console.log('userChoise:', choice)
+import { ref } from 'vue'
+import axios from 'axios'
+
+const gameResultMessage = ref('')
+
+const play = async (choice) => {
+  const { status, data } = await axios.post('http://localhost:3000/games/create-or-show', { game: { user_choice: choice }})
+  
+  if (status === 200 || status === 201) {
+    gameResultMessage.value = data.result
+  } else {
+    gameResultMessage.value = 'Something went wrong'
+  }
 }
 </script>
 
